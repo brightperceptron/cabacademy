@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Under Construction - Launching Soon!</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for Inter font and custom colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#0F172A', // Slate 900
+                        'accent': '#10B981',  // Emerald 500
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Load Lucide Icons for aesthetic visuals (FIXED: Using UMD build to expose 'lucide' globally) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Apply Inter Font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+    </style>
+</head>
+<body class="bg-primary text-white font-sans min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Container -->
+    <div class="max-w-xl w-full bg-gray-800/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 text-center border border-gray-700">
+
+        <!-- Header and Icon -->
+        <div class="flex flex-col items-center justify-center space-y-4 mb-8">
+            <!-- SVG Icon: Gear/Settings -->
+            <div class="animate-spin-slow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent">
+                    <path d="M12 2v3" />
+                    <path d="M16.24 7.76l-2.12 2.12" />
+                    <path d="M19 12h-3" />
+                    <path d="M16.24 16.24l-2.12-2.12" />
+                    <path d="M12 19v3" />
+                    <path d="M7.76 16.24l2.12-2.12" />
+                    <path d="M5 12h3" />
+                    <path d="M7.76 7.76l2.12 2.12" />
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+                Website <span class="text-accent">Under Construction</span>
+            </h1>
+        </div>
+
+        <!-- Main Message -->
+        <p class="text-gray-300 text-lg mb-8 max-w-lg mx-auto">
+            We're busy hammering out the final code and polishing the user experience. We're building something amazing, and we appreciate your patience!
+        </p>
+
+        <!-- Launch Date / Countdown Mockup -->
+        <div class="bg-gray-900 rounded-xl p-6 mb-8 border border-gray-700 shadow-inner">
+            <h2 class="text-xl font-semibold mb-3 text-gray-100 uppercase tracking-wider">Estimated Launch Day</h2>
+            <div class="flex items-center justify-center space-x-4">
+                <p class="text-4xl md:text-6xl font-black text-accent">
+                    OCT
+                </p>
+                <p class="text-6xl md:text-8xl font-black text-white leading-none">
+                    15
+                </p>
+                <p class="text-4xl md:text-6xl font-black text-accent">
+                    '25
+                </p>
+            </div>
+            <p class="text-sm text-gray-400 mt-2">Check back soon! The countdown is almost over.</p>
+        </div>
+
+        <!-- Call to Action: Stay Updated -->
+        <div class="space-y-4">
+            <h3 class="text-xl font-semibold text-gray-200">Get Notified When We Go Live</h3>
+
+            <!-- Netlify Email Form for Notifications -->
+            <form name="notification" method="POST" data-netlify="true" class="flex flex-col sm:flex-row gap-3">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    required
+                    class="flex-grow px-5 py-3 rounded-xl border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-accent focus:border-accent transition duration-300 shadow-md"
+                    aria-label="Email for notification"
+                >
+                <button
+                    type="submit"
+                    class="bg-accent hover:bg-emerald-600 text-primary font-bold py-3 px-6 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-lg shadow-accent/50 active:scale-[0.98]"
+                >
+                    Notify Me
+                </button>
+            </form>
+            
+            <!-- Social Media Links (Using Lucide SVGs) -->
+            <div class="flex justify-center space-x-6 pt-4">
+                <a href="#" class="text-gray-400 hover:text-accent transition duration-300" aria-label="Follow us on X (Twitter)">
+                    <svg data-lucide="twitter" class="w-7 h-7"></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-accent transition duration-300" aria-label="Follow us on Instagram">
+                    <svg data-lucide="instagram" class="w-7 h-7"></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-accent transition duration-300" aria-label="Follow us on LinkedIn">
+                    <svg data-lucide="linkedin" class="w-7 h-7"></svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer Contact Link -->
+        <p class="text-sm text-gray-500 mt-8">
+            <a href="mailto:support@example.com" class="hover:text-accent transition duration-300 underline">Need urgent support? Contact us.</a>
+        </p>
+
+    </div>
+
+    <!-- Script to render Lucide Icons and handle animations -->
+    <script>
+        // Renders all Lucide icons on the page using the globally available 'lucide' object
+        // The script is at the end of <body>, so DOM elements are ready.
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        } else {
+            console.error("Lucide icon library could not be loaded.");
+        }
+    </script>
+    <style>
+        /* Custom Keyframe for a slower, smoother spin */
+        @keyframes spin-slow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 20s linear infinite;
+        }
+    </style>
+</body>
+</html>
