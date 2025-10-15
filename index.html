@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">CAB Training Academy - Global Export & Import Certification</title>
+    <!-- Load Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration for Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable dark mode based on the 'dark' class on the HTML tag
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-emerald': '#059669', // emerald-600
+                        'primary-bg-light': '#f7f9fc',
+                        'primary-bg-dark': '#0a0a0a', // near black for contrast
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Using Inter as the primary font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, #f7f9fc); /* Default light background */
+            transition: background-color 0.3s;
+        }
+        /* Custom Properties for Dynamic Styling */
+        .light body {
+            --bg-color: #f7f9fc;
+        }
+        .dark body {
+            --bg-color: #0a0a0a;
+        }
+        
+        /* Primary color assumed to be a professional Emerald/Teal */
+        .primary-color-bg { background-color: #10b981; } /* emerald-500 */
+        .primary-color-text { color: #059669; } /* emerald-600 */
+        
+        /* Update custom text colors for dark mode */
+        .secondary-color-text { color: #6b7280; } /* gray-500 */
+        .dark .secondary-color-text { color: #9ca3af; } /* gray-400 */
+
+        /* Update card-shadow for dark mode */
+        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03); }
+        .dark .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2); }
+
+
+        /* Custom style for the active navigation item based on the image */
+        .active-nav-link {
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.15); /* Darker shade for active tab */
+        }
+        /* Downward-pointing triangle/indicator for active link */
+        .active-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* Position right below the nav bar */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #065f46; /* Match the nav bar background color */
+        }
+        /* Styling for the language buttons */
+        .lang-button {
+            padding: 4px 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .lang-button.active {
+            background-color: #059669; /* emerald-600 */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .lang-button:not(.active):hover {
+            background-color: #e5e7eb; /* gray-100 */
+        }
+        .dark .lang-button:not(.active) {
+            background-color: #1f2937; /* gray-800 */
+            color: #d1d5db; /* gray-300 */
+        }
+        .dark .lang-button:not(.active):hover {
+            background-color: #374151; /* gray-700 */
+        }
+    </style>
+</head>
+<body class="antialiased bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+
+    <!-- Primary Header (Logo & Main CTA) -->
+    <header class="bg-white dark:bg-gray-900 shadow-lg dark:shadow-2xl/50 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Site Name/Logo -->
+            <div class="text-2xl font-extrabold primary-color-text">
+                CAB <span class="text-gray-900 dark:text-white transition-colors duration-500">Training Academy</span>
+            </div>
+            
+            <!-- Language Switcher, Theme Switcher, and CTA (Desktop) -->
+            <div class="flex items-center space-x-4">
+                
+                <!-- Theme Switcher Dropdown -->
+                <div class="hidden md:block relative inline-block text-left">
+                    <button id="theme-dropdown-button" type="button" class="inline-flex items-center justify-center w-full rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150" aria-expanded="false" aria-haspopup="true">
+                        <span data-i18n="theme_button">Theme</span>
+                        <i data-lucide="sun-moon" class="w-5 h-5 ml-2"></i>
+                    </button>
+                    <div id="theme-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 hidden z-50">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="theme-dropdown-button">
+                            <a href="#" onclick="setTheme('light'); return false;" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 theme-option transition duration-150" data-theme-value="light" data-i18n="theme_light"><i data-lucide="sun" class="w-4 h-4 mr-2 inline-block"></i> Light</a>
+                            <a href="#" onclick="setTheme('dark'); return false;" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 theme-option transition duration-150" data-theme-value="dark" data-i18n="theme_dark"><i data-lucide="moon" class="w-4 h-4 mr-2 inline-block"></i> Dark</a>
+                            <a href="#" onclick="setTheme('system'); return false;" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 theme-option transition duration-150" data-theme-value="system" data-i18n="theme_system"><i data-lucide="monitor" class="w-4 h-4 mr-2 inline-block"></i> System</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language Switcher -->
+                <div class="hidden md:flex space-x-1 border border-gray-200 dark:border-gray-700 rounded-lg p-1 bg-gray-50 dark:bg-gray-800 transition-colors duration-500">
+                    <button id="lang-en" class="lang-button active" onclick="setLanguage('en')">EN</button>
+                    <button id="lang-bn" class="lang-button" onclick="setLanguage('bn')">BN</button>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <button class="px-6 py-2 primary-color-bg text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300 transform hover:scale-105" data-i18n="start_learning">
+                        Start Learning
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button class="md:hidden text-gray-600 dark:text-gray-300 hover:text-emerald-600" aria-label="Toggle menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Secondary Navigation Bar (Mimics the user's image, dark green) -->
+    <nav class="sticky top-0 z-40 bg-green-800 shadow-xl hidden md:block">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 flex space-x-0 text-white font-medium text-sm">
+            
+            <!-- Link 1: Active/Highlighted link -->
+            <a href="#about" class="active-nav-link px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="about_us">
+                About Us
+            </a>
+
+            <!-- Link 2: Courses (Research & Study) -->
+            <a href="#courses" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="courses">
+                Courses
+            </a>
+            
+            <!-- Link 3: Features (Policy Advocacy) -->
+            <a href="#features" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="features">
+                Features
+            </a>
+
+            <!-- Link 4: Curriculum (Academic) - Placeholder for new section -->
+            <a href="#" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="curriculum">
+                Curriculum
+            </a>
+            
+            <!-- Link 5: Partnerships (Partnerships) - Placeholder for new section -->
+            <a href="#" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="partnerships">
+                Partnerships
+            </a>
+
+            <!-- Link 6: Events & Activities -->
+            <a href="#" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="events_activities">
+                Events & Activities
+            </a>
+
+            <!-- Link 7: Resources (Publications) - Placeholder for new section -->
+            <a href="#" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="resources">
+                Resources
+            </a>
+            
+            <!-- Link 8: Blog -->
+            <a href="#" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="blog">
+                Blog
+            </a>
+            
+            <!-- Link 9: Contact -->
+            <a href="#contact" class="px-4 py-3 hover:bg-green-700 transition duration-150" data-i18n="contact">
+                Contact
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- Mobile Menu Dropdown (Re-using the new nav structure) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-green-800 dark:bg-gray-900 px-4 pt-2 pb-4 space-y-2 border-t border-gray-700 transition-colors duration-500">
+        <!-- Mobile Language Switcher -->
+        <div class="flex justify-center space-x-2 p-2 bg-green-700 dark:bg-gray-800 rounded-md">
+            <button id="lang-en-mobile" class="lang-button active bg-green-800 text-white" onclick="setLanguage('en')">EN</button>
+            <button id="lang-bn-mobile" class="lang-button text-white" onclick="setLanguage('bn')">BN</button>
+        </div>
+        
+        <!-- Mobile Theme Switcher -->
+        <div class="flex justify-center space-x-2 p-2 bg-green-700 dark:bg-gray-800 rounded-md">
+            <button onclick="setTheme('light'); return false;" class="flex items-center justify-center w-1/3 py-2 text-white text-sm rounded-lg hover:bg-green-600 dark:hover:bg-gray-700 theme-option-mobile" data-theme-value="light"><i data-lucide="sun" class="w-4 h-4 mr-2"></i> Light</button>
+            <button onclick="setTheme('dark'); return false;" class="flex items-center justify-center w-1/3 py-2 text-white text-sm rounded-lg hover:bg-green-600 dark:hover:bg-gray-700 theme-option-mobile" data-theme-value="dark"><i data-lucide="moon" class="w-4 h-4 mr-2"></i> Dark</button>
+            <button onclick="setTheme('system'); return false;" class="flex items-center justify-center w-1/3 py-2 text-white text-sm rounded-lg hover:bg-green-600 dark:hover:bg-gray-700 theme-option-mobile" data-theme-value="system"><i data-lucide="monitor" class="w-4 h-4 mr-2"></i> System</button>
+        </div>
+
+
+        <a href="#about" class="block py-2 text-white bg-green-700 dark:bg-gray-800 rounded-md text-center" data-i18n="about_us">About Us</a>
+        <a href="#courses" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="courses">Courses</a>
+        <a href="#features" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="features">Features</a>
+        <a href="#" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="curriculum">Curriculum</a>
+        <a href="#" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="partnerships">Partnerships</a>
+        <a href="#" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="events_activities">Events & Activities</a>
+        <a href="#" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="resources">Resources</a>
+        <a href="#" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="blog">Blog</a>
+        <a href="#contact" class="block py-2 text-white hover:bg-green-700 rounded-md text-center" data-i18n="contact">Contact</a>
+        <button class="w-full mt-2 py-2 primary-color-bg text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300" data-i18n="start_learning">
+            Start Learning
+        </button>
+    </div>
+
+    <main>
+        <!-- 1. Hero Section -->
+        <section class="pt-20 pb-28 text-center bg-gradient-to-br from-white to-emerald-50 dark:from-gray-950 dark:to-gray-900 transition-colors duration-500">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-5xl sm:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight mb-4 transition-colors duration-500">
+                    <span data-i18n="hero_title_main">Master the</span> <span class="primary-color-text" data-i18n="hero_title_span">World of Export & Import</span>
+                </h1>
+                <p class="text-xl secondary-color-text mb-8 max-w-3xl mx-auto" data-i18n="hero_subtitle">
+                    Master global trade procedures, documentation, and logistics with expert-led, practical courses designed for career success.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="px-10 py-4 primary-color-bg text-white font-bold text-lg rounded-xl shadow-xl hover:bg-emerald-600 transition duration-300 transform hover:scale-105" data-i18n="browse_courses">
+                        Browse All Courses
+                    </button>
+                    <button class="px-10 py-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold text-lg rounded-xl shadow-md border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300">
+                        <span class="flex items-center justify-center" data-i18n="watch_intro"><i data-lucide="play-circle" class="w-5 h-5 mr-2"></i> Watch Intro</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Statistics/Social Proof Section -->
+        <section class="-mt-16 pb-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-10 card-shadow grid grid-cols-1 sm:grid-cols-3 gap-6 text-center border border-gray-100 dark:border-gray-700 transition-colors duration-500">
+                    <!-- Stat 1 -->
+                    <div class="border-b sm:border-b-0 sm:border-r border-gray-200 dark:border-gray-700 pb-4 sm:pb-0">
+                        <p class="text-4xl font-extrabold primary-color-text">15,000+</p>
+                        <p class="text-sm secondary-color-text mt-1" data-i18n="stat_graduates">Global Trade Graduates</p>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="border-b sm:border-b-0 sm:border-r border-gray-200 dark:border-gray-700 pb-4 sm:pb-0">
+                        <p class="text-4xl font-extrabold primary-color-text">4.9/5.0</p>
+                        <p class="text-sm secondary-color-text mt-1" data-i18n="stat_rating">Trade Program Rating</p>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div>
+                        <p class="text-4xl font-extrabold primary-color-text">10+</p>
+                        <p class="text-sm secondary-color-text mt-1" data-i18n="stat_experts">International Trade Experts</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Course Showcase Section -->
+        <section id="courses" class="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4 transition-colors duration-500" data-i18n="courses_title">Our Flagship Global Trade Programs</h2>
+                <p class="text-xl text-center secondary-color-text mb-12" data-i18n="courses_subtitle">Get certified in documentation, logistics, and compliance.</p>
+
+                <!-- Course Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Course Card 1: Global Trade Documentation Mastery (Updated) -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col overflow-hidden border border-gray-100 dark:border-gray-700">
+                        <div class="p-6 flex-grow">
+                            <i data-lucide="file-text" class="w-8 h-8 primary-color-text mb-3"></i>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500" data-i18n="course1_title">Global Trade Documentation Mastery</h3>
+                            <p class="secondary-color-text text-sm" data-i18n="course1_desc">A deep dive into Bills of Lading, Certificates of Origin, commercial invoices, and regulatory compliance.</p>
+                            <div class="mt-4 flex flex-wrap gap-2 text-xs font-medium">
+                                <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full">Documentation Specialist</span>
+                                <span class="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full">80 Hours</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center transition-colors duration-500">
+                            <span class="text-lg font-bold primary-color-text price-display">৳54,900 BDT / ~$499 USD</span>
+                            <a href="#" class="text-sm font-semibold primary-color-text hover:text-emerald-700 transition flex items-center" data-i18n="view_curriculum">
+                                View Curriculum <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 2: Incoterms, Shipping & Logistics (Updated) -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col overflow-hidden border border-gray-100 dark:border-gray-700">
+                        <div class="p-6 flex-grow">
+                            <i data-lucide="ship" class="w-8 h-8 primary-color-text mb-3"></i>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500" data-i18n="course2_title">Incoterms, Shipping & Logistics</h3>
+                            <p class="secondary-color-text text-sm" data-i18n="course2_desc">Mastering the 2020 Incoterms, multimodal transport, customs procedures, and supply chain optimization.</p>
+                            <div class="mt-4 flex flex-wrap gap-2 text-xs font-medium">
+                                <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full">Logistics Manager</span>
+                                <span class="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full">Project Based</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center transition-colors duration-500">
+                            <span class="text-lg font-bold primary-color-text price-display">৳76,900 BDT / ~$699 USD</span>
+                            <a href="#" class="text-sm font-semibold primary-color-text hover:text-emerald-700 transition flex items-center" data-i18n="view_curriculum">
+                                View Curriculum <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 3: Export Market Entry & Finance (Updated) -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col overflow-hidden border border-gray-100 dark:border-gray-700">
+                        <div class="p-6 flex-grow">
+                            <i data-lucide="trending-up" class="w-8 h-8 primary-color-text mb-3"></i>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500" data-i18n="course3_title">Export Market Entry & Finance</h3>
+                            <p class="secondary-color-text text-sm" data-i18n="course3_desc">Strategies for market selection, risk assessment, currency hedging, and Letters of Credit (LCs).</p>
+                            <div class="mt-4 flex flex-wrap gap-2 text-xs font-medium">
+                                <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full">Business Enthusiasts</span>
+                                <span class="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full">Certification Included</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center transition-colors duration-500">
+                            <span class="text-lg font-bold primary-color-text price-display">৳60,400 BDT / ~$549 USD</span>
+                            <a href="#" class="text-sm font-semibold primary-color-text hover:text-emerald-700 transition flex items-center" data-i18n="view_curriculum">
+                                View Curriculum <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <a href="#" class="px-8 py-3 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-2 border-emerald-500 dark:border-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-700 transition duration-300" data-i18n="see_all_courses">
+                        See All 20+ Courses
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Why Choose Us / Features Section -->
+        <section id="features" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-semibold primary-color-text uppercase tracking-wider">The CAB Global Trade Advantage</span>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-500" data-i18n="features_title">Why Our Trade Students Succeed</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Feature 1 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl card-shadow text-center transform transition duration-300 hover:scale-[1.02] border border-gray-100 dark:border-gray-700">
+                        <i data-lucide="briefcase" class="w-10 h-10 primary-color-text mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-500" data-i18n="feature1_title">Trade Specialist Instructors</h3>
+                        <p class="secondary-color-text text-sm" data-i18n="feature1_desc">Courses designed by professionals who are actively working in international logistics and banking.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl card-shadow text-center transform transition duration-300 hover:scale-[1.02] border border-gray-100 dark:border-gray-700">
+                        <i data-lucide="users" class="w-10 h-10 primary-color-text mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-500" data-i18n="feature2_title">Live Documentation Workshops</h3>
+                        <p class="secondary-color-text text-sm" data-i18n="feature2_desc">Practice completing real-world export/import documentation to ensure error-free submissions.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl card-shadow text-center transform transition duration-300 hover:scale-[1.02] border border-gray-100 dark:border-gray-700">
+                        <i data-lucide="award" class="w-10 h-10 primary-color-text mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-500" data-i18n="feature3_title">Global Certification</h3>
+                        <p class="secondary-color-text text-sm" data-i18n="feature3_desc">Earn a recognized certificate upon completion, validated and respected in the international trade sector.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. About Us Section -->
+        <section id="about" class="py-20 bg-emerald-50 dark:bg-gray-950 transition-colors duration-500">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="text-sm font-semibold primary-color-text uppercase tracking-wider">Our Mission</span>
+                        <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-2 mb-4 transition-colors duration-500" data-i18n="about_us_title">Powering Careers in Global Commerce</h2>
+                        <p class="secondary-color-text text-lg mb-6" data-i18n="about_us_desc">
+                            CAB Training Academy was founded on the principle that practical, project-based learning is the only way to achieve true mastery in the **complex world of export and import**. We partner with industry leaders to design curricula that mirrors real-world challenges, ensuring our students aren't just knowledgeable—they're ready to execute international transactions seamlessly.
+                        </p>
+                        <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 primary-color-text mr-2"></i> <span data-i18n="about_us_li1">Focus on Documentation & Compliance</span></li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 primary-color-text mr-2"></i> <span data-i18n="about_us_li2">Expert-Vetted Incoterms Training</span></li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 primary-color-text mr-2"></i> <span data-i18n="about_us_li3">Real-World Case Studies & LCs</span></li>
+                        </ul>
+                    </div>
+                    <!-- Placeholder Image/Graphic -->
+                    <div class="hidden md:block">
+                        <div class="bg-emerald-200 dark:bg-emerald-800 h-96 w-full rounded-2xl flex items-center justify-center card-shadow transition-colors duration-500">
+                            <!-- Using a Globe icon to symbolize global trade -->
+                            <i data-lucide="globe" class="w-24 h-24 text-emerald-700 dark:text-emerald-300 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Contact Section (Netlify Form) -->
+        <section id="contact" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-sm font-semibold primary-color-text uppercase tracking-wider" data-i18n="contact_badge">Get In Touch</span>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-500" data-i18n="contact_title">Have a Question? We're Here to Help.</h2>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-8 sm:p-10 rounded-xl card-shadow border border-gray-100 dark:border-gray-700 transition-colors duration-500">
+                    <!-- Netlify Form Implementation -->
+                    <form name="contact" method="POST" data-netlify="true" class="space-y-6">
+                        <!-- Required hidden field for Netlify -->
+                        <input type="hidden" name="form-name" value="contact" />
+
+                        <!-- Name Field -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="form_name">Full Name</label>
+                            <input type="text" name="name" id="name" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition duration-150"
+                                placeholder="Enter your full name (আপনার পুরো নাম)">
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="form_email">Email Address</label>
+                            <input type="email" name="email" id="email" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition duration-150"
+                                placeholder="you@example.com">
+                        </div>
+
+                        <!-- Message Field -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="form_message">Your Message</label>
+                            <textarea name="message" id="message" rows="4" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition duration-150"
+                                placeholder="Type your inquiry here... (আপনার জিজ্ঞাসা এখানে লিখুন...)"></textarea>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div>
+                            <button type="submit" class="w-full px-6 py-3 primary-color-bg text-white font-bold text-lg rounded-xl shadow-lg hover:bg-emerald-600 transition duration-300 transform hover:scale-[1.01]" data-i18n="send_message">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="text-center mt-8 text-gray-600 dark:text-gray-400">
+                    <p>Or call us directly at: **[Contact Details Placeholder]**</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-gray-950 text-white pt-16 pb-8 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 border-b border-gray-700 dark:border-gray-800 pb-10 mb-8">
+                <!-- Column 1: Logo & Description -->
+                <div class="col-span-2 md:col-span-2">
+                    <h3 class="text-3xl font-extrabold primary-color-text mb-3">CAB Training Academy</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="footer_desc">Your bridge from theory to industry readiness. We build masters in global trade.</p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="footer_links1_title">Trade Platform</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#courses" class="hover:text-white transition" data-i18n="all_programs">All Programs</a></li>
+                        <li><a href="#features" class="hover:text-white transition" data-i18n="trade_features">Trade Features</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="instructor_login">Instructor Login</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="trade_careers">Trade Careers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Resources -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="footer_links2_title">Help & Support</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition" data-i18n="faq">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="support_center">Support Center</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="official_email">Official Email</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="contact_details">Contact Details</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Legal & Policies -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="footer_links3_title">Legal</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition" data-i18n="privacy_policy">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="terms_conditions">Terms and Condition</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="refund_policy">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition" data-i18n="address">Address (if applicable)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Developer Credit -->
+            <div class="text-center text-gray-500 dark:text-gray-400 text-sm mb-1 transition-colors duration-500">
+                Developed by <a href="http://www.neurasoft.top" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-medium transition duration-300">NeuraSoft</a>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="text-center text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
+                &copy; <span id="year"></span> CAB Training Academy. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // --- INTERNATIONALIZATION (i18n) DATA ---
+        const translations = {
+            en: {
+                page_title: "CAB Training Academy - Global Export & Import Certification",
+                start_learning: "Start Learning", about_us: "About Us", courses: "Courses", features: "Features", curriculum: "Curriculum", partnerships: "Partnerships", events_activities: "Events & Activities", resources: "Resources", blog: "Blog", contact: "Contact",
+                hero_title_main: "Master the", hero_title_span: "World of Export & Import",
+                hero_subtitle: "Master global trade procedures, documentation, and logistics with expert-led, practical courses designed for career success.",
+                browse_courses: "Browse All Courses", watch_intro: "Watch Intro",
+                stat_graduates: "Global Trade Graduates", stat_rating: "Trade Program Rating", stat_experts: "International Trade Experts",
+                courses_title: "Our Flagship Global Trade Programs", courses_subtitle: "Get certified in documentation, logistics, and compliance.",
+                course1_title: "Global Trade Documentation Mastery", course1_desc: "A deep dive into Bills of Lading, Certificates of Origin, commercial invoices, and regulatory compliance.",
+                course2_title: "Incoterms, Shipping & Logistics", course2_desc: "Mastering the 2020 Incoterms, multimodal transport, customs procedures, and supply chain optimization.",
+                course3_title: "Export Market Entry & Finance", course3_desc: "Strategies for market selection, risk assessment, currency hedging, and Letters of Credit (LCs).",
+                view_curriculum: "View Curriculum", see_all_courses: "See All 20+ Courses",
+                features_title: "Why Our Trade Students Succeed", feature1_title: "Trade Specialist Instructors", feature1_desc: "Courses designed by professionals who are actively working in international logistics and banking.",
+                feature2_title: "Live Documentation Workshops", feature2_desc: "Practice completing real-world export/import documentation to ensure error-free submissions.",
+                feature3_title: "Global Certification", feature3_desc: "Earn a recognized certificate upon completion, validated and respected in the international trade sector.",
+                about_us_title: "Powering Careers in Global Commerce", about_us_desc: "CAB Training Academy was founded on the principle that practical, project-based learning is the only way to achieve true mastery in the **complex world of export and import**. We partner with industry leaders to design curricula that mirrors real-world challenges, ensuring our students aren't just knowledgeable—they're ready to execute international transactions seamlessly.",
+                about_us_li1: "Focus on Documentation & Compliance", about_us_li2: "Expert-Vetted Incoterms Training", about_us_li3: "Real-World Case Studies & LCs",
+                contact_badge: "Get In Touch", contact_title: "Have a Question? We're Here to Help.",
+                form_name: "Full Name", form_email: "Email Address", form_message: "Your Message", send_message: "Send Message",
+                footer_desc: "Your bridge from theory to industry readiness. We build masters in global trade.", footer_links1_title: "Trade Platform", footer_links2_title: "Help & Support", footer_links3_title: "Legal",
+                all_programs: "All Programs", trade_features: "Trade Features", instructor_login: "Instructor Login", trade_careers: "Trade Careers", faq: "FAQ", support_center: "Support Center", official_email: "Official Email", contact_details: "Contact Details", privacy_policy: "Privacy Policy", terms_conditions: "Terms and Condition", refund_policy: "Refund Policy", address: "Address (if applicable)",
+                theme_button: "Theme", theme_light: "Light", theme_dark: "Dark", theme_system: "System"
+            },
+            bn: {
+                page_title: "সিএবি ট্রেনিং একাডেমি - বৈশ্বিক রপ্তানি ও আমদানি সনদ",
+                start_learning: "শেখা শুরু করুন", about_us: "আমাদের সম্পর্কে", courses: "কোর্সসমূহ", features: "বৈশিষ্ট্য", curriculum: "পাঠ্যক্রম", partnerships: "অংশীদারিত্ব", events_activities: "ইভেন্ট ও কার্যক্রম", resources: "রিসোর্স", blog: "ব্লগ", contact: "যোগাযোগ",
+                hero_title_main: "আয়ত্ত করুন", hero_title_span: "রপ্তানি ও আমদানির বিশ্ব",
+                hero_subtitle: "বিশেষজ্ঞ-নেতৃত্বাধীন, ব্যবহারিক কোর্সের মাধ্যমে বৈশ্বিক বাণিজ্য প্রক্রিয়া, ডকুমেন্টেশন এবং লজিস্টিক্সে দক্ষতা অর্জন করুন, যা কর্মজীবনের সাফল্যের জন্য তৈরি।",
+                browse_courses: "সব কোর্স দেখুন", watch_intro: "পরিচিতি দেখুন",
+                stat_graduates: "বৈশ্বিক বাণিজ্য স্নাতক", stat_rating: "ট্রেড প্রোগ্রাম রেটিং", stat_experts: "আন্তর্জাতিক বাণিজ্য বিশেষজ্ঞ",
+                courses_title: "আমাদের প্রধান বৈশ্বিক বাণিজ্য প্রোগ্রাম", courses_subtitle: "ডকুমেন্টেশন, লজিস্টিকস এবং কমপ্লায়েন্সে সনদ পান।",
+                course1_title: "বৈশ্বিক বাণিজ্য ডকুমেন্টেশন দক্ষতা", course1_desc: "বিল অফ ল্যাডিং, সার্টিফিকেট অফ অরিজিন, বাণিজ্যিক চালান এবং নিয়ন্ত্রক সম্মতির গভীরে প্রবেশ।",
+                course2_title: "ইনকোটার্মস, শিপিং ও লজিস্টিকস", course2_desc: "২০২০ ইনকোটার্মস, মাল্টিমোডাল পরিবহন, কাস্টমস প্রক্রিয়া এবং সাপ্লাই চেইন অপটিমাইজেশন আয়ত্ত করা।",
+                course3_title: "রপ্তানি বাজার প্রবেশ ও অর্থায়ন", course3_desc: "বাজার নির্বাচন, ঝুঁকি মূল্যায়ন, মুদ্রা হেজিং এবং লেটার অফ ক্রেডিট (LCs) এর কৌশল।",
+                view_curriculum: "পাঠ্যক্রম দেখুন", see_all_courses: "সব ২০+ কোর্স দেখুন",
+                features_title: "কেন আমাদের বাণিজ্য শিক্ষার্থীরা সফল হয়", feature1_title: "বাণিজ্য বিশেষজ্ঞ প্রশিক্ষক", feature1_desc: "আন্তর্জাতিক লজিস্টিকস এবং ব্যাংকিংয়ে সক্রিয়ভাবে কর্মরত পেশাদারদের দ্বারা ডিজাইন করা কোর্স।",
+                feature2_title: "লাইভ ডকুমেন্টেশন কর্মশালা", feature2_desc: "ত্রুটিমুক্ত জমা নিশ্চিত করতে বাস্তব-বিশ্বের রপ্তানি/আমদানি ডকুমেন্টেশন পূরণ করার অনুশীলন।",
+                feature3_title: "বৈশ্বিক সনদ", feature3_desc: "সমাপ্তির পরে একটি স্বীকৃত সনদ অর্জন করুন, যা আন্তর্জাতিক বাণিজ্য খাতে যাচাইকৃত এবং সম্মানিত।",
+                about_us_title: "বৈশ্বিক বাণিজ্যে ক্যারিয়ারকে শক্তিশালী করা", about_us_desc: "সিএবি ট্রেনিং একাডেমি এই নীতির উপর প্রতিষ্ঠিত যে ব্যবহারিক, প্রকল্প-ভিত্তিক শিক্ষাই **রপ্তানি ও আমদানির জটিল বিশ্বে** সত্যিকারের দক্ষতা অর্জনের একমাত্র উপায়। আমরা শিল্প নেতাদের সাথে অংশীদারিত্ব করে এমন পাঠ্যক্রম ডিজাইন করি যা বাস্তব-বিশ্বের চ্যালেঞ্জগুলিকে প্রতিফলিত করে, যাতে আমাদের শিক্ষার্থীরা কেবল জ্ঞানী না হয়—তারা আন্তর্জাতিক লেনদেনগুলি নির্বিঘ্নে সম্পাদন করতে প্রস্তুত থাকে।",
+                about_us_li1: "ডকুমেন্টেশন ও কমপ্লায়েন্সে মনোযোগ", about_us_li2: "বিশেষজ্ঞ-যাচাইকৃত ইনকোটার্মস প্রশিক্ষণ", about_us_li3: "বাস্তব-বিশ্বের কেস স্টাডি ও এলসি",
+                contact_badge: "যোগাযোগ করুন", contact_title: "প্রশ্ন আছে? আমরা সাহায্য করতে প্রস্তুত।",
+                form_name: "পুরো নাম", form_email: "ইমেল ঠিকানা", form_message: "আপনার বার্তা", send_message: "বার্তা পাঠান",
+                footer_desc: "তাত্ত্বিক জ্ঞান থেকে শিল্প-প্রস্তুতিতে আপনার সেতু। আমরা বৈশ্বিক বাণিজ্যে বিশেষজ্ঞ তৈরি করি।", footer_links1_title: "বাণিজ্য প্ল্যাটফর্ম", footer_links2_title: "সাহায্য ও সমর্থন", footer_links3_title: "আইনি",
+                all_programs: "সব প্রোগ্রাম", trade_features: "বাণিজ্যের বৈশিষ্ট্য", instructor_login: "প্রশিক্ষক লগইন", trade_careers: "বাণিজ্য ক্যারিয়ার", faq: "সচরাচর প্রশ্ন", support_center: "সহায়তা কেন্দ্র", official_email: "অফিসিয়াল ইমেল", contact_details: "যোগাযোগের বিবরণ", privacy_policy: "গোপনীয়তা নীতি", terms_conditions: "শর্তাবলী", refund_policy: "ফেরত নীতি", address: "ঠিকানা (যদি প্রযোজ্য হয়)",
+                theme_button: "থিম", theme_light: "লাইট", theme_dark: "ডার্ক", theme_system: "সিস্টেম"
+            }
+        };
+
+        // --- LANGUAGE SWITCHER FUNCTION ---
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            // Update all elements with the data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    // Handle specific elements requiring innerHTML (like the about_us_desc for bolding)
+                    if (key === 'about_us_desc') {
+                        const htmlContent = translations[lang][key].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        element.innerHTML = htmlContent;
+                    } else if (element.tagName === 'BUTTON' || element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.innerText = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // Update active state of language buttons (Desktop & Mobile)
+            ['en', 'bn'].forEach(l => {
+                document.getElementById(`lang-${l}`).classList.remove('active');
+                const mobileBtn = document.getElementById(`lang-${l}-mobile`);
+                if (mobileBtn) {
+                     mobileBtn.classList.remove('active', 'bg-green-800');
+                }
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+            const mobileBtnActive = document.getElementById(`lang-${lang}-mobile`);
+            if (mobileBtnActive) {
+                mobileBtnActive.classList.add('active', 'bg-green-800');
+            }
+            
+            // Set document language attribute
+            document.documentElement.lang = lang;
+            
+            // Re-initialize icons to ensure correct coloring if needed
+            lucide.createIcons();
+        }
+
+        // --- THEME SWITCHER LOGIC ---
+        const themeDropdownMenu = document.getElementById('theme-dropdown-menu');
+        const themeDropdownButton = document.getElementById('theme-dropdown-button');
+
+        // Toggle dropdown menu visibility
+        if (themeDropdownButton) {
+            themeDropdownButton.addEventListener('click', () => {
+                themeDropdownMenu.classList.toggle('hidden');
+                const isExpanded = themeDropdownMenu.classList.contains('hidden') ? 'false' : 'true';
+                themeDropdownButton.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!themeDropdownMenu.contains(event.target) && !themeDropdownButton.contains(event.target)) {
+                themeDropdownMenu.classList.add('hidden');
+                themeDropdownButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Utility function to get the current system preference
+        const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            let currentMode;
+
+            if (theme === 'dark') {
+                currentMode = 'dark';
+                html.classList.add('dark');
+                html.classList.remove('light');
+            } else if (theme === 'light') {
+                currentMode = 'light';
+                html.classList.add('light');
+                html.classList.remove('dark');
+            } else { // system default
+                currentMode = prefersDark() ? 'dark' : 'light';
+                if (currentMode === 'dark') {
+                    html.classList.add('dark');
+                    html.classList.remove('light');
+                } else {
+                    html.classList.add('light');
+                    html.classList.remove('dark');
+                }
+            }
+            return currentMode;
+        }
+
+        function setTheme(theme) {
+            localStorage.setItem('theme', theme);
+            applyTheme(theme);
+            updateThemeDropdownDisplay(theme);
+            // Hide dropdown after selection (for desktop)
+            if (themeDropdownMenu) {
+                themeDropdownMenu.classList.add('hidden');
+                themeDropdownButton.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        function getStoredTheme() {
+            return localStorage.getItem('theme') || 'system';
+        }
+
+        function updateThemeDropdownDisplay(currentTheme) {
+            // Desktop buttons
+            document.querySelectorAll('.theme-option').forEach(option => {
+                const value = option.getAttribute('data-theme-value');
+                // Remove all highlight classes
+                option.classList.remove('bg-emerald-100', 'dark:bg-emerald-800', 'text-emerald-800', 'dark:text-white', 'font-semibold', 'hover:bg-gray-100', 'dark:hover:bg-gray-600');
+                
+                if (value === currentTheme) {
+                    // Apply highlight for active theme
+                    option.classList.add('bg-emerald-100', 'dark:bg-emerald-800', 'text-emerald-800', 'dark:text-white', 'font-semibold');
+                } else {
+                    // Apply hover styles for inactive themes
+                    option.classList.add('hover:bg-gray-100', 'dark:hover:bg-gray-600');
+                }
+            });
+
+            // Mobile buttons
+             document.querySelectorAll('.theme-option-mobile').forEach(option => {
+                const value = option.getAttribute('data-theme-value');
+                option.classList.remove('bg-white', 'text-gray-900', 'font-semibold');
+                option.classList.add('bg-green-700', 'text-white');
+
+                if (value === currentTheme) {
+                    option.classList.add('bg-white', 'text-gray-900', 'font-semibold');
+                    option.classList.remove('bg-green-700', 'text-white');
+                }
+            });
+        }
+        
+        // Listen for system theme changes (only if system is the current setting)
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (getStoredTheme() === 'system') {
+                applyTheme('system');
+            }
+        });
+
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            lucide.createIcons();
+            document.getElementById('year').textContent = new Date().getFullYear();
+            setLanguage('en'); // Set default language
+            setTheme(getStoredTheme()); // Apply stored or default theme
+        };
+    </script>
+</body>
+</html>
